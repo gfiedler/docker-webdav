@@ -1,4 +1,4 @@
-###A WebDAV server supporting private and shared folders
+### A WebDAV server supporting private and shared folders [![Build Status](https://travis-ci.org/gfiedler/docker-webdav.svg?branch=master)](https://travis-ci.org/gfiedler/docker-webdav)
 
 Start the server with:
 
