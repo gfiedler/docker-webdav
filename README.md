@@ -20,7 +20,9 @@ A user can be added to a shared folder with:
 
     docker exec webdav adduser USER GROUP
 
-Now you should be able to access the folder: http://localhost/GROUP
+Now you should be able to access the folder: 
+
+    http://localhost/GROUP
 
 Remove private or shared folders with:
 
@@ -32,3 +34,6 @@ Save and restore folders and authentication data with:
     docker exec webdav export >webdav.backup
     docker exec webdav import <webdav.backup
 
+HTTPS support can be enabled as described in [httpd].
+
+[httpd]: https://hub.docker.com/_/httpd
