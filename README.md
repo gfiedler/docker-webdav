@@ -2,15 +2,13 @@
 
 Start the server with:
 
-    docker run -d -p 80 --name webdav sftech/webdav
+    docker run -d -p 80:80 --name webdav sftech/webdav
 
 A private folder can be added to the container with:
 
     docker exec -it webdav adduser USER
 
-You will be prompted for a password. Now you should be able to access the folder:
-
-    http://localhost/user/USER
+You will be prompted for a password. Now you should be able to access the folder: http://localhost/user/USER
 
 A shared folder can be added to the container with:
 
@@ -20,9 +18,7 @@ A user can be added to a shared folder with:
 
     docker exec webdav adduser USER GROUP
 
-Now you should be able to access the folder: 
-
-    http://localhost/GROUP
+Now you should be able to access the folder: http://localhost/GROUP
 
 Remove private or shared folders with:
 
