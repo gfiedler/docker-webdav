@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ $# == 0 ] ; then
+  cat << EOF
+    $0 GROUP
+      Remove shared webdav group.
+EOF
+  exit 1
+fi
+
+group=$1
+
+rm -rf "${HTTPD_PREFIX}/htdocs/${group}"
+rm -f  "${HTTPD_PREFIX}/conf.d/${group}.group"
+
+sed -i -e "/^$group:/d" "${HTTPD_PREFIX}/conf.d/groups"
+
+apachectl restart

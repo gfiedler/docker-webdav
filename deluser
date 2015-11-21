@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# == 0 ] ; then
+  cat << EOF
+    $0 USER
+      Remove webdav user.
+EOF
+  exit 1
+fi
+
+user=$1
+
+htpasswd -D "${HTTPD_PREFIX}/conf.d/passwd" $user
+
+rm -rf "${HTTPD_PREFIX}/htdocs/user/${user}"
+rm -f  "${HTTPD_PREFIX}/conf.d/${user}.conf"
+
+sed -i -e "s/ $user / /" "${HTTPD_PREFIX}/conf.d/groups"
+
+apachectl restart

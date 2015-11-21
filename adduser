@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [ $# == 0 ] ; then
+  cat << EOF
+    $0 USER
+      Create webdav user.
+
+    $0 USER GROUP
+      Add webdav user to existing shared group.
+EOF
+  exit 1
+fi
+
+user=$1
+userdir="${HTTPD_PREFIX}/htdocs/user/${user}"
+
+if [ ! -d "$userdir" ] ; then
+  htpasswd "${HTTPD_PREFIX}/conf.d/passwd" $1 || exit 1
+
+  mkdir -p "$userdir"
+  chown daemon "$userdir"
+  chmod 0750 "$userdir"
+
+  cat <<EOF >"${HTTPD_PREFIX}/conf.d/${user}.user"
+<Directory $userdir>
+  DAV On
+  Require user $user
+</Directory>
+EOF
+
+  apachectl restart
+fi
+
+if [ $# == 2 ] ; then
+  group=$2
+  groupdir="${HTTPD_PREFIX}/htdocs/${group}"
+  if [ ! -d "$groupdir" ] ; then
+    echo "group $2 not exist"
+    exit 1
+  else
+    sed -i -e "/^$group: /s/\$/$user /" "${HTTPD_PREFIX}/conf.d/groups"
+  fi
+fi
+

@@ -1,0 +1,2 @@
+#!/bin/sh
+cd $HTTPD_PREFIX && tar zxf - conf.d htdocs

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ $# == 0 ] ; then
+  cat << EOF
+    $0 GROUP
+      Create shared webdav group.
+EOF
+  exit 1
+fi
+
+group=$1
+groupdir="${HTTPD_PREFIX}/htdocs/${group}"
+
+test -d "$groupdir" && echo "group $1 already exist" && exit 1
+
+echo "$group: " >> "${HTTPD_PREFIX}/conf.d/groups"
+
+mkdir -p "$groupdir"
+chown daemon "$groupdir"
+chmod 0750 "$groupdir"
+
+cat <<EOF >"${HTTPD_PREFIX}/conf.d/${group}.group"
+<Directory $groupdir>
+  DAV On
+  Require group $group
+</Directory>
+EOF
+
+apachectl restart
